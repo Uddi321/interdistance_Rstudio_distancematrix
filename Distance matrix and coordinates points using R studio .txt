@@ -1,0 +1,73 @@
+How to calculate inter-distances more than two points with co-ordinates
+For Two Points 
+library(geosphere)
+
+# Define coordinates (longitude first, then latitude)
+point1 <- c(88.293958, 26.480089)
+point2 <- c(88.293849, 26.480583)
+
+# Calculate the Haversine distance in meters
+distance <- distHaversine(point1, point2)
+
+# Print the distance
+print(distance)
+
+For Four points 
+library(geosphere)
+
+# Define four points (longitude, latitude)
+points <- matrix(c(
+  88.293958, 26.480089,  # Point A
+  88.293849, 26.480583,  # Point B
+  88.294500, 26.481000,  # Point C
+  88.295000, 26.482000   # Point D
+), ncol = 2, byrow = TRUE)
+
+# Compute distance matrix (in meters)
+distance_matrix <- distm(points, fun = distHaversine)
+
+# Print the distance matrix
+print(distance_matrix)
+df <- as.data.frame(distance_matrix)
+write_xlsx(df, "distance_matrix.xlsx")
+library(writexl)
+getwd()
+
+# Optional: Convert meters to kilometers
+distance_matrix_km <- distance_matrix / 1000
+print(distance_matrix_km)
+
+The distance between TW1 and TW2 is 56.05 meters. The distance between TW1 and TW3 is 114.89 meters. The distance between TW1 and TW4 is 236.72 meters. The distance between TW2 and TW3 is 79.76 meters. The distance between TW2 and TW4 is 195.02 meters. The distance between TW3 and TW4 is 121.96 meters.
+
+output 
+> point1 <- c(88.293958, 26.480089)
+> point2 <- c(88.293849, 26.480583)
+> distance <- distHaversine(point1, point2)
+> print(distance)
+[1] 56.05407
+> points <- matrix(c(
++   88.293958, 26.480089,  # Point A
++   88.293849, 26.480583,  # Point B
++   88.294500, 26.481000,  # Point C
++   88.295000, 26.482000   # Point D
++ ), ncol = 2, byrow = TRUE)
+> distance_matrix <- distm(points, fun = distHaversine)
+> print(distance_matrix)
+          [,1]      [,2]      [,3]     [,4]
+[1,]   0.00000  56.05407 114.89544 236.7157
+[2,]  56.05407   0.00000  79.76473 195.0246
+[3,] 114.89544  79.76473   0.00000 121.9592
+[4,] 236.71572 195.02455 121.95919   0.0000
+> df <- as.data.frame(distance_matrix)
+> library(writexl)
+> write_xlsx(df, "distance_matrix.xlsx")
+> write_xlsx(df,"distance_matrix.xlsx")
+> getwd()
+[1] "C:/Users/dell/Documents"
+> distance_matrix_km <- distance_matrix / 1000
+> print(distance_matrix_km)
+           [,1]       [,2]       [,3]      [,4]
+[1,] 0.00000000 0.05605407 0.11489544 0.2367157
+[2,] 0.05605407 0.00000000 0.07976473 0.1950246
+[3,] 0.11489544 0.07976473 0.00000000 0.1219592
+[4,] 0.23671572 0.19502455 0.12195919 0.0000000
